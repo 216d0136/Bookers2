@@ -1,0 +1,107 @@
+<div class="container">
+<% if flash[:notice] %>
+		<p><%= flash[:notice] %></p>
+<% end %>
+<div class="row">
+	<div class="col-xs-3">
+
+
+<h1>User info</h1>
+
+
+<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>name</th>
+				<th>introduction</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+		<%= attachment_image_tag @user, :profile_image, size: "40x40", fallback: "download.jpg" %>
+		<td><%= @user.name %></td>
+		<td><%= @user.introduction %></td>
+		<% if user_signed_in? && @user.id == current_user.id %>
+			</tr>
+
+            <tr>
+				<th colspan="2"><%= link_to edit_user_path(@user.id)do %>
+					<span class="col-xs-12 btn btn-default glyphicon glyphicon-wrench"></span>
+				<% end%>
+				</th>
+		<% end %>
+			</tr>
+		</tbody>
+</table>
+
+
+
+<h2>New book</h2>
+
+<%= form_for(@book_new) do |f| %>
+<% if @book.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@book.errors.count, "error") %> prohibited this product from being saved:</h2>
+    <ul>
+      <% @book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+	<div class="field">
+		<%= f.label :title %><br>
+		<%= f.text_field :title %>
+	</div>
+	<div class="field">
+		<%= f.label :opinion %><br>
+		<%= f.text_field :body %><br>
+	</div>
+	<div class="actions">
+		<%= f.submit "Create Book" %>
+	</div>>
+	<% end %>
+
+	</div>
+
+<div class="col-xs-9">
+
+	<h1>Book detail</h1>
+
+<table class="table table-striped">
+<tr>
+		<td>
+		<%= link_to @user do %>
+       <%= attachment_image_tag(@book.user, :profile_image, size: "40x40", fallback: "download.jpg") %>
+      	  <%= @user.name %>
+      </td>
+      <% end %>
+
+		<td><%= @book.title %></td>
+
+
+		<td><%= @book.body %></td>
+				<% if @book.user_id == current_user.id %>
+
+
+			<th><%= link_to edit_book_path(@book) do %>
+			<span class="btn-sm btn-success edit_book">Edit</span>
+			<% end %>
+			</th>
+
+
+			<th><%= link_to book_path(@book),method: :delete, data: { confirm: 'Are you sure?' } do %>
+			<span class="btn-sm btn-danger destroy_book">Destroy</span>
+			<% end %>
+			</th>
+
+</tr>
+
+<% end %>
+</table>
+</table>
+</div>
+</div>
+</div>s
+
